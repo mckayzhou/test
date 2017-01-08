@@ -46,20 +46,22 @@ public class logAop {
 		
 		String method=joinPoint.getSignature().getDeclaringTypeName();
 		String args =joinPoint.getArgs().toString();
-		log.info("执行"+method+"方法, 参数为： "+args);
+		log.info("开始执行"+method+"方法, 参数为： "+args);
 	}
-	
+
 	//配置后置通知，使用在aspect()方法上注册的切入点
 	@After("aspect()")
 	public void after(JoinPoint joinPoint){
-		String method =joinPoint.getSignature().getDeclaringTypeName();
-		//String result=joinPoint
+//		String method =joinPoint.getSignature().getDeclaringTypeName();
+//		String result;
 	}
 	
 	//配置环绕通知
 	@Around("aspect()")
-	public void around(ProceedingJoinPoint point){
-		
+	public void around(ProceedingJoinPoint point) throws Throwable{
+		String method=point.getSignature().getDeclaringTypeName();
+		Object result=point.proceed();
+		log.info("执行方法"+method+"的结果为： "+result);
 	}
 	
 	//配置后置返回通知
@@ -71,6 +73,7 @@ public class logAop {
 	//配置抛出异常后的通知
 	@AfterThrowing("aspect()")
 	public void afterThrow(JoinPoint joinPoint){
+		String method=joinPoint.getSignature().getDeclaringTypeName();
 		
 	}
 	
