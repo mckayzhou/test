@@ -23,6 +23,8 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.fastjson.JSON;
+
 /** 
  * @ClassName: logAop 
  * @Description: 日志处理类
@@ -71,9 +73,15 @@ public class logAop {
 	}
 	
 	//配置抛出异常后的通知
-	@AfterThrowing("aspect()")
-	public void afterThrow(JoinPoint joinPoint){
+	@AfterThrowing(pointcut="aspect()",throwing="e")
+	public void afterThrow(JoinPoint joinPoint,Throwable e){
 		String method=joinPoint.getSignature().getDeclaringTypeName();
+		String params=JSON.toJSONString(joinPoint.getArgs()) ;
+
+		log.error("<<<<<<<<<<<<<<<method"+method+"has exception>>>>>>>>>>>>>>");
+		log.error("<<<<<<<<<<<<<<<param are"+params+">>>>>>>>>>>>>>>>>>>>>>>>");
+		log.error("<<<<<<<<<<<<<<异常代码是："+e.getClass().getName()+">>>>>>>>>>");
+		log.error("<<<<<<<<<<<<<<异常信息是："+e.getMessage()+">>>>>>>>>>>>>>>>>>");
 		
 	}
 	
